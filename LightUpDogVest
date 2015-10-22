@@ -1,0 +1,45 @@
+// EL Wire Dog Harness Program
+// Turn EL wire on when ambient light is low.
+// JenFoxBot
+// Based on test sketch by Mike Grusin, SparkFun Electronics
+
+void setup() {
+  Serial.begin(9600);  
+  // The EL channels are on pins 2 through 9
+  // Initialize the pins as outputs
+  pinMode(2, OUTPUT);  // channel A  
+  pinMode(3, OUTPUT);  // channel B   
+  pinMode(4, OUTPUT);  // channel C
+  pinMode(5, OUTPUT);  // channel D    
+  pinMode(6, OUTPUT);  // channel E
+  pinMode(7, OUTPUT);  // channel F
+  pinMode(8, OUTPUT);  // channel G
+  pinMode(9, OUTPUT);  // channel H
+  // We also have two status LEDs, pin 10 on the Escudo, 
+  // and pin 13 on the Arduino itself
+  pinMode(10, OUTPUT);     
+  pinMode(13, OUTPUT); 
+  pinMode(A2, INPUT);  
+}
+
+void loop() 
+{
+  int x,status;
+  
+  //If ambient lighting is too low, turn on EL wire
+  if(analogRead(A2) < 50){
+    digitalWrite(2, HIGH); //turn EL channel on
+    delay(1000); //wait 1 second
+    
+    //Keep EL wire on until light sensor reading is greater than 50
+    if(analogRead(A2) > 50){
+      digitalWrite(2, LOW); //turn EL channel off
+      delay(10);
+    }
+    
+    Serial.println(analogRead(A2)); // Use this to check value of ambient light 
+    
+    digitalWrite(10, status);   // blink both status LEDs
+    digitalWrite(13, status);
+  }
+}
